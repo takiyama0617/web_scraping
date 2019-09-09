@@ -1,0 +1,2 @@
+module Scraping::TabelogHelper
+end
