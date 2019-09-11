@@ -4,17 +4,22 @@ class Tabelog
   def initialize
   end
 
-  def get_store
-    url = 'https://tabelog.com/kanagawa/A1404/A140403/'
+  def get_store(prefecture)
+    url = 'https://tabelog.com/' + prefecture + '/'
     charset = nil
     html = open(url) do |f|
       charset = f.charset
       f.read
     end
 
+    result = []
     doc = Nokogiri::HTML.parse(html, nil, charset)
-    doc.xpath('//*[@id="column-main"]/ul/li[1]/div[2]/div[1]/div/div/div/a').each do |node|
-      puts node.inner_text
+    doc.xpath('//*[@id="column-main"]/ul/li/div/div/div/div/div/a').each do |node|
+      result << node.inner_text
     end
+    result
+  end
+
+  def sort_score(shops, sort)
   end
 end

@@ -3,6 +3,6 @@ class Scraping::TabelogController < ApplicationController
     prefecture = params[:prefecture]
     @prefecture = prefecture
     tabelog = Tabelog.new
-    tabelog.get_store
+    @shops = tabelog.get_store(prefecture)
   end
 end
