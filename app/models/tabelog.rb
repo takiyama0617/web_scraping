@@ -41,7 +41,6 @@ class Tabelog
       charset = f.charset
       f.read
     end
-    obj = Struct.new(:html, :charset)
-    obj.new(html, charset)
+    Struct.new(:html, :charset).new(html, charset)
   end
 end
