@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Scraping
+  # 食○ログ スクレイピング
   class TabelogController < ApplicationController
     def show
       prefecture = params[:prefecture]
