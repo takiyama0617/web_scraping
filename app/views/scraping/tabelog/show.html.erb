@@ -1,9 +1,18 @@
-<% @shops.each do |shop| %>
-<div class="card text-white bg-dark mb-3 text-center" style="max-width: 22rem;">
-  <div class="card-body">
-    <h5 class="card-title"><%= shop.name %></h5>
-    <p class="card-text">Score : <%= shop.score %></p>
-    <a href="<%= shop.url %>" class="stretched-link "></a>
+<div class="container-fluid">
+  <% @shops.each do |shop| %>
+  <div class="card mb-2" >
+    <div class="row no-gutters">
+      <div class="col-md-2">
+        <img class="card-img" src="<%= shop.image %>%">
+      </div>
+      <div class="col-md-8">
+        <div class="card-body">
+          <h5 class="card-title"><%= shop.name %></h5>
+          <p class="card-text">Score : <%= shop.score %></p>
+          <a href="<%= shop.url %>" class="stretched-link "></a>
+        </div>
+      </div>
+    </div>
   </div>
+  <% end %>
 </div>
-<% end %>
