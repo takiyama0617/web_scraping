@@ -9,14 +9,15 @@ class Tabelog
   def get_store(url)
     resource = get_html(url)
     result = []
-    shop = Struct.new(:name, :url, :score)
+    shop = Struct.new(:name, :url, :score, :image)
     doc = Nokogiri::HTML.parse(resource.html, nil, resource.charset)
     doc.xpath('//*[@id="column-main"]/ul/li/div').each do |elements|
       tmp = elements.search('a.list-rst__rst-name-target')
       next if tmp.empty?
 
       score = elements.search('p.cpy-total-score > span').inner_text
-      result << shop.new(tmp.inner_text, tmp.attribute('href'), score.to_f)
+      image = elements.search('img.cpy-main-image').attribute('data-original').value
+      result << shop.new(tmp.inner_text, tmp.attribute('href'), score.to_f, image)
     end
     result
   end
