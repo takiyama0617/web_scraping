@@ -6,9 +6,8 @@ module Scraping
     def show
       prefecture = params[:prefecture]
       area = params[:area]
-      tabelog = Tabelog.new
-      target_area = tabelog.get_target_area(prefecture, URI.unescape(area))
-      @shops = tabelog.get_store(target_area.area_url)
+      tabelog = Tabelog.new(prefecture, URI.unescape(area))
+      @shops = tabelog.shop_list
     end
   end
 end
