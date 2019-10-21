@@ -14,17 +14,16 @@ class Tabelog
 
   def shop_list
     shop_list = []
-    puts all_pages
     shop = Struct.new(:name, :url, :score, :image)
-    return shop_list if main_contents.nil?
+    all_pages.each do |url|
+      get_main_contents(url).search('ul > li > div').each do |elements|
+        tmp = elements.search('a.list-rst__rst-name-target')
+        next if tmp.empty?
 
-    main_contents.search('ul > li > div').each do |elements|
-      tmp = elements.search('a.list-rst__rst-name-target')
-      next if tmp.empty?
-
-      score = elements.search('p.cpy-total-score > span').inner_text
-      image = elements.search('img.cpy-main-image').attribute('data-original').value
-      shop_list << shop.new(tmp.inner_text, tmp.attribute('href'), score.to_f, image)
+        score = elements.search('p.cpy-total-score > span').inner_text
+        image = elements.search('img.cpy-main-image').attribute('data-original').value
+        shop_list << shop.new(tmp.inner_text, tmp.attribute('href'), score.to_f, image)
+      end
     end
     shop_list
   end
