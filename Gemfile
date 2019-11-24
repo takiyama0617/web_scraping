@@ -61,8 +61,9 @@ end
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
-gem "nokogiri", ">= 1.10.4"
+gem 'typhoeus'
 
+gem 'nokogiri', '>= 1.10.4'
 gem 'mechanize'
 
 gem 'bootstrap', '~> 4.3.1'

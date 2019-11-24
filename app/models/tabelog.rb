@@ -33,9 +33,9 @@ class Tabelog
   private
 
   def get_target_area(prefecture, area)
-    resource = get_html('https://tabelog.com/izakaya-guide/' + prefecture + '/')
+    resource = get_html(['https://tabelog.com/izakaya-guide/' + prefecture + '/'])
     result = {}
-    doc = Nokogiri::HTML.parse(resource.html, nil, resource.charset)
+    doc = Nokogiri::HTML.parse(resource[0].html, nil, resource[0].charset)
     hoge = doc.css('body > div.izakaya-guide-wrap > div.izakaya-guide > div.izakaya-guide__contents > section > ul > li:nth-child(n) > div > div > div > div > ul')
     hoge.search('ul > li > a').each do |elements|
       next unless elements.children.inner_text.include?(area)
@@ -48,22 +48,33 @@ class Tabelog
     result
   end
 
-  def get_html(url)
-    puts "access → #{url}"
-    charset = nil
-    html = open(url) do |f|
-      charset = f.charset
-      f.read
+  def get_html(urls = [])
+    hydra = Typhoeus::Hydra.new
+    requests = urls.map do |url|
+      puts "access : #{url}"
+      request = Typhoeus::Request.new(url)
+      hydra.queue(request)
+      request
     end
-    Struct.new(:html, :charset).new(html, charset)
+    hydra.run
+
+    responses = requests.map do |request|
+      html = request.response.body
+      Struct.new(:html, :charset).new(html, 'utf-8')
+    end
+    responses
   end
 
   def get_main_contents(url)
     return nil if url.empty?
 
-    resource = get_html(url)
-    html = Nokogiri::HTML.parse(resource.html, nil, resource.charset)
-    html.css('#column-main')
+    resources = get_html([url])
+    m = nil
+    resources.each do |resource|
+      html = Nokogiri::HTML.parse(resource.html, nil, resource.charset)
+      m = html.css('#column-main')
+    end
+    m
   end
 
   def all_pages
